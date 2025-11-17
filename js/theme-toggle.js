@@ -1,20 +1,34 @@
 /**
+ * Multi-Theme Picker Script
+ *
+ * This script handles both:
+ * 1. Initial theme setup (runs immediately to prevent layout shift)
+ * 2. Change event listener for theme picker dropdown (runs on DOMContentLoaded)
+ *
  * IMPORTANT: This file must be loaded WITHOUT the 'defer' attribute
  * to ensure theme is set before the page renders.
  */
 (function () {
   'use strict';
 
-  const STORAGE_KEY = 'theme'; // values: 'light' | 'dark'
+  const STORAGE_KEY = 'theme'; // values: 'light' | 'dark' | 'ocean' | 'forest' | 'sunset'
+  const VALID_THEMES = ['light', 'dark', 'ocean', 'forest', 'sunset'];
+  const DARK_THEMES = ['dark', 'ocean', 'forest', 'sunset']; // Themes that should use dark colorScheme
   const root = document.documentElement;
 
   function applyTheme(theme) {
-    if (theme === 'dark') {
-      root.setAttribute('data-theme', 'dark');
-      // inform UA controls about the chosen theme so native controls match
+    // Validate theme
+    if (!VALID_THEMES.includes(theme)) {
+      theme = 'light'; // fallback to light if invalid
+    }
+
+    // Set data-theme attribute
+    root.setAttribute('data-theme', theme);
+
+    // Set colorScheme based on whether theme is light or dark-based
+    if (DARK_THEMES.includes(theme)) {
       root.style.colorScheme = 'dark';
     } else {
-      root.setAttribute('data-theme', 'light');
       root.style.colorScheme = 'light';
     }
   }
@@ -46,24 +60,20 @@
   applyTheme(theme);
 
   // ============================================================
-  // PART 2: Button initialization and event listener (runs on DOMContentLoaded)
+  // PART 2: Dropdown initialization and event listener (runs on DOMContentLoaded)
   // ============================================================
   document.addEventListener('DOMContentLoaded', function() {
-    const btn = document.getElementById('theme-toggle');
-    if (!btn) return; // no button to enhance
+    const picker = document.getElementById('theme-picker');
+    if (!picker) return; // no picker to enhance
 
-    // Set initial button text and state
-    btn.textContent = theme === 'dark' ? '☀️ Light' : '🌙 Dark';
-    btn.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
+    // Set initial dropdown value
+    picker.value = theme;
 
-    // Add click event listener
-    btn.addEventListener('click', () => {
-      const current = root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
-      const next = current === 'dark' ? 'light' : 'dark';
-      applyTheme(next);
-      setStoredTheme(next);
-      btn.setAttribute('aria-pressed', next === 'dark' ? 'true' : 'false');
-      btn.textContent = next === 'dark' ? '☀️ Light' : '🌙 Dark';
+    // Add change event listener
+    picker.addEventListener('change', () => {
+      const selectedTheme = picker.value;
+      applyTheme(selectedTheme);
+      setStoredTheme(selectedTheme);
     });
   });
 

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&family=Merriweather:wght@400;700&family=Playfair+Display:wght@700;900&display=swap');
 
 /* CSS Variables with Fallbacks */
 :root {
@@ -47,6 +47,8 @@
     /* Custom Fonts with Fallbacks - IDE Style */
     --font-primary: 'JetBrains Mono', 'Consolas', 'Monaco', 'Courier New', monospace;
     --font-mono: 'Space Mono', 'Courier New', monospace;
+    --font-serif: 'Merriweather', 'Georgia', serif;
+    --font-display: 'Playfair Display', 'Georgia', serif;
 
     /* Border Radius */
     --radius-sm: 0.125rem;
@@ -98,6 +100,69 @@
     --color-border-cyan: #06b6d4;
     --color-text: #0f172a;
     --color-text-muted: #64748b;
+}
+
+/* Ocean theme - Deep blues and teals with aquatic palette */
+:root[data-theme="ocean"] {
+    --color-primary: #0c4a6e;
+    --color-secondary: #075985;
+    --color-accent: #06b6d4;
+    --color-accent-hover: #0891b2;
+    --color-accent-2: #22d3ee;
+    --color-accent-3: #3b82f6;
+    --color-accent-4: #0ea5e9;
+    --color-accent-5: #14b8a6;
+    --color-bg: #001a33;
+    --color-bg-alt: #002244;
+    --color-bg-card: #003355;
+    --color-border: #06b6d4;
+    --color-border-pink: #22d3ee;
+    --color-border-cyan: #0ea5e9;
+    --color-text: #e0f2fe;
+    --color-text-muted: #7dd3fc;
+    --font-primary: 'Space Mono', monospace;
+}
+
+/* Forest theme - Greens and earth tones with nature-inspired palette */
+:root[data-theme="forest"] {
+    --color-primary: #14532d;
+    --color-secondary: #166534;
+    --color-accent: #10b981;
+    --color-accent-hover: #059669;
+    --color-accent-2: #84cc16;
+    --color-accent-3: #22c55e;
+    --color-accent-4: #4ade80;
+    --color-accent-5: #a3e635;
+    --color-bg: #0a2818;
+    --color-bg-alt: #0f3e26;
+    --color-bg-card: #134d2f;
+    --color-border: #10b981;
+    --color-border-pink: #84cc16;
+    --color-border-cyan: #22c55e;
+    --color-text: #d1fae5;
+    --color-text-muted: #86efac;
+    --font-primary: 'Merriweather', serif;
+}
+
+/* Sunset theme - Warm oranges, purples, and golden hues */
+:root[data-theme="sunset"] {
+    --color-primary: #7c2d12;
+    --color-secondary: #9a3412;
+    --color-accent: #f97316;
+    --color-accent-hover: #ea580c;
+    --color-accent-2: #fb923c;
+    --color-accent-3: #fbbf24;
+    --color-accent-4: #f59e0b;
+    --color-accent-5: #dc2626;
+    --color-bg: #1a0f0a;
+    --color-bg-alt: #2d1810;
+    --color-bg-card: #3f2418;
+    --color-border: #f97316;
+    --color-border-pink: #fb923c;
+    --color-border-cyan: #fbbf24;
+    --color-text: #ffedd5;
+    --color-text-muted: #fdba74;
+    --font-primary: 'Playfair Display', serif;
 }
 
 /* Smooth transition for theme change */
@@ -639,7 +704,8 @@ iframe {
 }
 
 /* Theme Toggle Button */
-.theme-toggle {
+/* Theme Picker Dropdown (supports multiple themes) */
+.theme-picker {
     position: absolute;
     top: var(--spacing-md, 1rem);
     right: var(--spacing-md, 1rem);
@@ -649,6 +715,7 @@ iframe {
     color: var(--color-text, #0f172a);
     font-weight: 600;
     font-size: var(--font-size-sm, 0.875rem);
+    font-family: var(--font-primary, 'JetBrains Mono', monospace);
     border-radius: 0;
     cursor: pointer;
     transition: all var(--transition-base, 250ms);
@@ -657,9 +724,10 @@ iframe {
     text-transform: uppercase;
     letter-spacing: 0.05em;
     z-index: 10;
+    min-width: 120px;
 }
 
-.theme-toggle:hover {
+.theme-picker:hover {
     background: light-dark(
         linear-gradient(135deg, #f3e8ff, #fce7f3),
         linear-gradient(135deg, #3730a3, #4338ca)
@@ -670,14 +738,21 @@ iframe {
     box-shadow: 5px 5px 0 var(--color-accent-3, #06b6d4);
 }
 
-.theme-toggle:active {
+.theme-picker:active {
     transform: translate(1px, 1px);
     box-shadow: 2px 2px 0 var(--color-accent-2, #ec4899);
 }
 
-.theme-toggle:focus-visible {
+.theme-picker:focus-visible {
     outline: 3px solid var(--color-accent-3, #06b6d4);
     outline-offset: 2px;
+}
+
+/* Style the dropdown options */
+.theme-picker option {
+    background-color: var(--color-bg, #fefefe);
+    color: var(--color-text, #0f172a);
+    padding: var(--spacing-sm, 0.5rem);
 }
 
 /* Footer */
